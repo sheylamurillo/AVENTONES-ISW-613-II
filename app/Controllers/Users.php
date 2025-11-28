@@ -54,6 +54,10 @@ class Users extends BaseController
         return redirect()->to('/'); //pagina de espera a confirmacion de cuenta (Sheyla)
     }
 
+
+    /*Si el usuario está autenticado,obtiene los datos del formulario y revisa si el usuario ya tiene un registro de configuración: 
+      si existe, lo actualiza; de lo contrario, lo guarda por primera vez. */
+
     public function saveConfiguration() 
     {
         $session = session(); 
@@ -64,6 +68,7 @@ class Users extends BaseController
         } 
 
         $idUser = $session->get('user')['idUser']; 
+       
         $publicName = $this->request->getPost('public-name'); 
         $publicBio = $this->request->getPost('public-bio'); 
 
@@ -80,6 +85,7 @@ class Users extends BaseController
         return redirect()->to('/configuration'); 
     }
 
+    //Si el usuario está autenticado, obtiene su configuración desde el modelo y la envía a la vista para mostrarla en el formulario.
     public function loadConfiguration()
     {
         $session = session(); 
@@ -88,6 +94,7 @@ class Users extends BaseController
             return redirect()->to('/login'); 
         } 
         $idUser = $session->get('user')['idUser']; 
+         
         $configurationModel = new ConfigurationModel(); 
         $configuration = $configurationModel->getConfigurationData($idUser); 
         $data['configuration'] = $configuration; 
