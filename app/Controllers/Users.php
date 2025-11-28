@@ -53,6 +53,46 @@ class Users extends BaseController
 
         return redirect()->to('/'); //pagina de espera a confirmacion de cuenta (Sheyla)
     }
+
+    public function saveConfiguration() 
+    {
+        $session = session(); 
+
+        if (!session()->has('user')) 
+        { 
+            return redirect()->to('/login'); 
+        } 
+
+        $idUser = $session->get('user')['idUser']; 
+        $publicName = $this->request->getPost('public-name'); 
+        $publicBio = $this->request->getPost('public-bio'); 
+
+        $configurationModel = new ConfigurationModel(); 
+
+        $existingConfig = $configurationModel->getConfigurationData($idUser); 
+
+        if ($existingConfig === null) { 
+            $configurationModel->insertConfiguration($idUser, $publicName, $publicBio); 
+        } 
+        else {
+            $configurationModel->updateConfiguration($idUser, $publicName, $publicBio); 
+        }
+        return redirect()->to('/configuration'); 
+    }
+
+    public function loadConfiguration()
+    {
+        $session = session(); 
+        if (!session()->has('user')) 
+        { 
+            return redirect()->to('/login'); 
+        } 
+        $idUser = $session->get('user')['idUser']; 
+        $configurationModel = new ConfigurationModel(); 
+        $configuration = $configurationModel->getConfigurationData($idUser); 
+        $data['configuration'] = $configuration; 
+        return view('configuration/configuration', $data); 
+    } 
 }
 
 
