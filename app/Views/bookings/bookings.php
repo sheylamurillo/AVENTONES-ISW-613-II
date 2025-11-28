@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <title>Bookings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= base_url('styles/generalStyle.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('styles/booking.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/generalStyle.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/booking.css') ?>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 </head>
 
