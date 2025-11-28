@@ -5,6 +5,16 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+
+//$routes->get('/', 'Home::index');
+
+
+//BOOKINGS
+$routes->get('bookings', 'Bookings::index');
+$routes->get('/bookings/create/(:num)', 'Bookings::create/$1');
+$routes->get('/bookings/update/(:num)/(:alpha)', 'Bookings::updateStatus/$1/$2');
+
+
 $routes->get('/', 'AuthController::login');
 
 $routes->post('passenger/store', 'Users::storePassenger');
@@ -17,3 +27,4 @@ $routes->get('auth/registerDriver', 'AuthController::registerDriver');
 $routes->get('/driver/bookings', 'Driver::bookings');
 $routes->get('/passenger/searchRides', 'Passenger::searchRides');
 $routes->get('/allUsers', 'Admin::loadAllUsers');
+
