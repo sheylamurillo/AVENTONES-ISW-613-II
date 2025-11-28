@@ -1,0 +1,4 @@
+# Carpetas quue no se suben
+public/uploads/
+writable/
+.env
