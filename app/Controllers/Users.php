@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\UsersModel;
-
+use App\Models\ConfigurationModel;
 
 class Users extends BaseController
 {
@@ -93,6 +93,7 @@ class Users extends BaseController
         $data['configuration'] = $configuration; 
         return view('configuration/configuration', $data); 
     } 
+
 }
 
 
