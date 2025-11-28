@@ -1,0 +1,9 @@
+# Carpetas que NO deben subirse
+public/uploads/
+writable/
+.env
+
+#Logs y sesiones
+writable/sessions/
+writable/cache/
+writable/logs/
