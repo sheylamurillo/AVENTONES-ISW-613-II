@@ -49,16 +49,15 @@ nav.Head:hover {
     background-color: #c6c6c6;
 }
 
-header>img[src="../images/logo.png"] {
-    display: flex;
-}
 
 .design-logo {
+    display: block;     
+    margin: 0 auto;      
     width: 400px;
-    height: auto;
     padding: 30px;
-    margin: 0 auto;
 }
+
+
 
 .menu-cont {
     display: flex;
