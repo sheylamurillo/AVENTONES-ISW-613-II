@@ -10,7 +10,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('configuration', 'Users::loadConfiguration');
 $routes->post('configuration/save', 'Users::saveConfiguration');
 
-
 //BOOKINGS
 $routes->get('bookings', 'Bookings::index');
 $routes->get('bookings/create/(:num)', 'Bookings::create/$1');
