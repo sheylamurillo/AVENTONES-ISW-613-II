@@ -33,12 +33,12 @@ class AuthController extends BaseController
     if (!$user) {
         // Usuario no encontrado
         $session->setFlashdata('error', 'notfound'); //FlashData es una session que al leerse, se destruye
-        return redirect()->back()->withInput(); //Signifa que se redirecciona al url anterior, o sea de donde viene
+        return redirect()->back()->withInput(); //Signifa que se redirecciona hacia donde provino la petición
     }
 
     if (!password_verify($password, $user['password'])) {
         // Contraseña incorrecta
-        $session->setFlashdata('error', 'passwords');
+        $session->setFlashdata('error', 'password');
         return redirect()->back()->withInput(); //WithInput hace que puedas conservar lo escrito en los campos
     }
 
@@ -58,7 +58,7 @@ class AuthController extends BaseController
 
     switch ($user['role']) {
         case 'Driver':
-            return redirect()->to('/driver/bookings');
+            return redirect()->to('/vehicles');
         case 'Passenger':
             return redirect()->to('/passenger/searchRides');
         case 'Admin':

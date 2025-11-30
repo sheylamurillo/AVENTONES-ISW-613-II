@@ -17,7 +17,15 @@ class Users extends BaseController
     {
         $data = $this->request->getPost();
         $data['role'] = 'Driver'; 
-        return $this->saveUser($data); 
+
+    }
+        
+        public function storeAdmin()
+    {
+        $data = $this->request->getPost();
+        $data['role'] = 'Admin';
+        return $this->saveUser($data);
+   
     }
 
     public function storePassenger()
@@ -27,12 +35,7 @@ class Users extends BaseController
         return $this->saveUser($data);
     }
 
-    public function storeAdmin()
-    {
-        $data = $this->request->getPost();
-        $data['role'] = 'Admin';
-        return $this->saveUser($data);
-    }
+    
 
     private function saveUser($data)
     {

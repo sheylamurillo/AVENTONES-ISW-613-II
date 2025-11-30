@@ -12,7 +12,7 @@
 
     <main>
         <header>
-            <img src="../images/logo.png" class="imageLogo" alt="Aventones Logo" />
+            <img src="<?= base_url('uploads/logo.png') ?>"  class="imageLogo" alt="Aventones Logo" />
         </header>
 
         <section class="contLogin">

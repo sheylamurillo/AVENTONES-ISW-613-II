@@ -13,7 +13,7 @@
 
 <body>
     <header>
-        <img src="<?= base_url('images/logo.png')?>" class="design-logo" alt="Aventones Logo">
+        <img src="<?= base_url('uploads/logo.png') ?>" class="design-logo" alt="Aventones Logo">
 
         <div class="menu-cont">
             <nav class="Head" aria-label="Main menu">
@@ -24,7 +24,7 @@
 
             <div class="navigation-cont">
                 <div class="user-menu">
-                    <img src="<?= base_url('images/user.png')?>" class="navigation-image" alt="User icon">
+                    <img src="<?= base_url('uploads/logo.png') ?>" class="navigation-image" alt="User icon">
                     <nav class="menu-hover">
                         <ul>
                            
