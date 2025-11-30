@@ -61,7 +61,7 @@ class Rides extends BaseController
     }
 
     // Carga los datos necesarios para la vista Search Rides.Si no hay POST, inicializa los valores por defecto. Finalmente envía todo a la vista.
-    public function loadData(){
+    public function loadData(bool $isPublic){
         $data = $this->loadSelectOptions();
         if ($this->request->getMethod() === 'POST') {
             $data = array_merge($data, $this->processFilters());
@@ -74,7 +74,65 @@ class Rides extends BaseController
             $data['order']               = 'ASC';
             $data['orderBy']             = 'departureTime';
         }
+        $data['isPublic'] = $isPublic;
         return view('searchRides/searchRides', $data);
+    }
+
+
+    //Sirve para que el user no tenga que repetir la búsqueda de cuando hizo el filtro en search public, cuando inicia sesión se mantendrá la búsqueda realiza en el search publico
+    private function loadDataFromSavedFilters($filters)
+    {
+        $rideModel = new RidesModel();
+
+        $rides = $rideModel->filter(
+            $filters['from'],
+            $filters['to'],
+            $filters['days'] ?? [],
+            $filters['orderBy'] ?? 'departureTime',
+            $filters['order'] ?? 'ASC'
+        );
+
+        $data = $this->loadSelectOptions();
+
+        $data['rides'] = $rides;
+        $data['originSelected'] = $filters['from'];
+        $data['destinationSelected'] = $filters['to'];
+        $data['days'] = $filters['days'] ?? [];
+        $data['order'] = $filters['order'] ?? 'ASC';
+        $data['orderBy'] = $filters['orderBy'] ?? 'departureTime';
+        $data['isPublic'] = false;
+
+        return view('searchRides/searchRides', $data);
+    }
+
+    /* Carga la búsqueda privada de Rides. Si existen filtros guardados desde la búsqueda pública,se cargan esos resultados . Si no,
+    simplemente se muestra la vista privada vacía o con datos por defecto*/
+    public function searchRidesPrivate(){
+        $session = session();
+        if ($session->has('filters_public')) {
+            $filters = $session->get('filters_public');
+            $session->remove('filters_public');
+            return $this->loadDataFromSavedFilters($filters);
+        }
+        return $this->loadData(false);
+    }
+
+
+    //Carga la búsqueda pública de Rides. Si el usuario envía el formulario, se guardan las opciones seleccioandas en sesión para poder restaurarlos después del login.
+    public function searchRidesPublic(){
+        $session = session();
+
+        if ($this->request->getMethod() === 'post') {
+
+        $session->set('filters_public', [
+            'from'      => $this->request->getPost('from'),
+            'to'        => $this->request->getPost('to'),
+            'days'      => $this->request->getPost('days'),
+            'order'     => $this->request->getPost('order'),
+            'orderBy'   => $this->request->getPost('orderBy'),
+        ]);
+    }
+        return $this->loadData(true);
     }
 
 }

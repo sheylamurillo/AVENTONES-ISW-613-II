@@ -51,7 +51,7 @@
 
 
                 <p>Not a user? <a href="<?= base_url('auth/registerPassenger') ?>">Register Now</a></p>
-                <p><a href="<?= base_url('searchRides') ?>">View Public Rides</a></p>
+                <p><a href="<?= base_url('searchRides/public') ?>">View Public Rides</a></p>
 
 
                 <div class="contButton">

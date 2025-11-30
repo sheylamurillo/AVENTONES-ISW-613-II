@@ -16,8 +16,12 @@ $routes->get('bookings/create/(:num)', 'Bookings::create/$1');
 $routes->get('bookings/update/(:num)/(:alpha)', 'Bookings::updateStatus/$1/$2');
 
 //SEARCH RIDES
-$routes->get('searchRides', 'Rides::loadData');
-$routes->post('searchRides', 'Rides::loadData');
+$routes->get('searchRides', 'Rides::searchRidesPrivate');
+$routes->post('searchRides', 'Rides::searchRidesPrivate');
+
+$routes->get('searchRides/public', 'Rides::searchRidesPublic');
+$routes->post('searchRides/public', 'Rides::searchRidesPublic');
+
 
 //LOGIN
 $routes->get('/', 'AuthController::login');

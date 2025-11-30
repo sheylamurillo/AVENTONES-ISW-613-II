@@ -39,7 +39,7 @@
 
         <h1>Search Rides</h1>
 
-        <form id="search-form" method="POST" action = "<?= base_url('searchRides') ?>">
+        <form id="search-form" method="POST" action="<?= $isPublic ? base_url('searchRides/public') : base_url('searchRides') ?>">>
 
             <section class="section-search">
 
@@ -82,7 +82,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Driver</th>
+                         <?php if (!$isPublic): ?>
+                            <th>Driver</th>
+                            
+                        <?php endif; ?>
+
                         <th>
                             From
                             <button form="search-form" type="submit" name="change_order" value="from">
@@ -109,13 +113,28 @@
                     <?php foreach ($rides as $ride) { ?>
 
                         <tr>
-                            <td> <?= $ride['name'] . " " . $ride['lastName'] ?> </td>
-                            <td> <a href="<?= base_url('rideDetails/' . $ride['idRide']) ?>"> <?= $ride['origin'] ?></a></td>
+                            <?php if (!$isPublic): ?>
+                                <td><?= $ride['name'] . " " . $ride['lastName'] ?></td>
+                                <td><a href="<?= base_url('rideDetails/' . $ride['idRide']) ?>"> <?= $ride['origin'] ?></a></td>
+                            <?php else: ?>
+                                <td><?= $ride['origin'] ?></td>
+                            <?php endif; ?>
+
                             <td> <?= $ride['destination'] ?></td>
                             <td> <?= $ride['availableSeats'] ?></td>
-                            <td> <?= $ride['brand'] . " - " . $ride['model'] ?> </td>
+                            <td> <?= $ride['brand'] . " - " . $ride['model'] . " - " . $ride['year']?> </td>
                             <td> <?= $ride['costPerSeat'] ?></td>
-                            <td> <a href="<?= base_url('bookings/create/' . $ride['idRide']) ?>">Request</a></td>
+                            <?php if (!$isPublic): ?>
+                                <td>
+                                    <a href="<?= base_url('bookings/create/' . $ride['idRide']) ?>">Request</a>
+                                </td>
+                            <?php else: ?>
+                                <td>
+                                    <a href="<?= base_url('login?redirect=searchRides') ?>">Login to request</a>
+                                </td>
+                                
+                            <?php endif; ?>
+                            
                         </tr>
 
                     <?php } ?>
