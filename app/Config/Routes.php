@@ -6,6 +6,15 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+
+//ACTIVATE AACCOUNT
+$routes->get('activate/(:any)', 'Users::activate/$1');
+
+//SEARCH REPORT
+$routes->get('admin/searchReport', 'Rides::loadSearchReportByDate');
+$routes->post('admin/searchReport', 'Rides::loadSearchReportByDate');
+
+
 //CONFIFURATIONS
 $routes->get('configuration', 'Users::loadConfiguration');
 $routes->post('configuration/save', 'Users::saveConfiguration');
@@ -21,7 +30,13 @@ $routes->post('searchRides', 'Rides::searchRidesPrivate');
 
 $routes->get('searchRides/public', 'Rides::searchRidesPublic');
 $routes->post('searchRides/public', 'Rides::searchRidesPublic');
+$routes->get('passenger/searchRides', 'Rides::searchRidesPrivate');
+$routes->post('passenger/searchRides', 'Rides::searchRidesPrivate');
 
+
+//SEARCH REPORT
+$routes->get('users/administrator/searchReport', 'Rides::loadSearchReportByDate');
+$routes->post('users/administrator/searchReport', 'Rides::loadSearchReportByDate');
 
 //LOGIN
 $routes->get('/', 'AuthController::login');
