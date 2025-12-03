@@ -16,7 +16,11 @@ trait AuthTrait
 
     protected function verifyDriver()
     {
-        if ($r = $this->verifyLogged()) return $r;
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verifications;
+        }
+        
 
         if (session()->get('user')['role'] !== 'Driver') {
             return redirect()->to('/')->with('error', 'permission');
@@ -26,7 +30,10 @@ trait AuthTrait
 
     protected function verifyPassenger()
     {
-        if ($r = $this->verifyLogged()) return $r;
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verifications;
+        }
 
         if (session()->get('user')['role'] !== 'Passenger') {
             return redirect()->to('/')->with('error', 'permission');
@@ -36,9 +43,12 @@ trait AuthTrait
 
     protected function verifyAdmin()
     {
-        if ($r = $this->verifyLogged()) return $r;
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verifications;
+        }
 
-        if (session()->get('user')['role'] !== 'Administrator') {
+        if (session()->get('user')['role'] !== 'Admin') {
             return redirect()->to('/')->with('error', 'permission');
         }
         return null;

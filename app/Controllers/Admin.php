@@ -1,27 +1,27 @@
 <?php
-namespace App\Controllers;
-use App\Models\UsersModel;
 
+namespace App\Controllers;
+
+use App\Models\UsersModel;
+use App\Traits\AuthTrait;
 
 class Admin extends BaseController
 {
+    use AuthTrait;
+
     public function loadAllUsers()
     {
-        $session = session();
-
-        //Verificar si hay sesión iniciada
-        if (!$session->has('user')) {
-            return redirect()->to('/')->with('error', 'noSession');
+        $Verification = $this->verifyAdmin();
+        if ($Verification !== null) {
+            return $Verification; // Redirección si no está logueado o no es driver
         }
 
-        //Verificar rol de usuario
-        if ($session->get('user')['role'] !== 'Admin') {
-            return redirect()->to('/')->with('error', 'permission');
-        }
+        
 
-        // Si todo bien, cargar vista
         $model = new UsersModel();
-        $data['users'] = $model->select('idUser, ID, name, lastName, role, status')->findAll();
+        $data['users'] = $model
+            ->select('idUser, ID, name, lastName, role, status')
+            ->findAll();
 
         return view('users/administrator/showAllUsers', $data);
     }

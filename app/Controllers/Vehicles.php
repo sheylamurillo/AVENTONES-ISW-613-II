@@ -1,36 +1,18 @@
 <?php
 namespace App\Controllers;
 use App\Models\VehiclesModel;
-
+use App\Traits\AuthTrait;
 
 class Vehicles extends BaseController
 {
-    protected $session;
-
-    public function __construct()
-    {
-        $this->session = session(); 
-    }
-
-    public function VerificationSessionAndRole(){
-    
-
-     //Verificar si hay sesión iniciada
-        if (!$this->session->has('user')) {
-            return redirect()->to('/')->with('error', 'noSession');
-        }
-
-        //Verificar rol de usuario
-        if ($this->session->get('user')['role'] !== 'Driver') {
-            return redirect()->to('/')->with('error', 'permission');
-        }
-    }
+   
+    use AuthTrait;
 
 
     public function storeVehicle(){
-        $authResponse = $this->VerificationSessionAndRole();
-        if ($authResponse) {
-            return $authResponse; //Redirección si hay error
+       $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verifications;
         }
 
         $data = $this->request->getPost();
@@ -57,8 +39,7 @@ class Vehicles extends BaseController
 
 
     public function editVehicle($id){
-    $authResponse = $this->VerificationSessionAndRole();
-    if ($authResponse) return $authResponse;
+    if ($r = $this->verifyDriver()) return $r;
 
     $vehicleModel = new VehiclesModel();
     $vehicle = $vehicleModel->find($id);
@@ -70,8 +51,11 @@ class Vehicles extends BaseController
 
     public function updateVehicle($id)
     {
-        $authResponse = $this->VerificationSessionAndRole();
-        if ($authResponse) return $authResponse;
+       $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verifications;
+        }
+        
 
         $vehicleModel = new VehiclesModel();
 
@@ -94,16 +78,21 @@ class Vehicles extends BaseController
         return redirect()->to('/vehicles');
     }
 
+
+
     public function inactivateVehicle($id){
-    $authResponse = $this->VerificationSessionAndRole();
-    if ($authResponse) return $authResponse;
+       $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verifications;
+        }
+        
 
-    $vehicleModel = new VehiclesModel();
+        $vehicleModel = new VehiclesModel();
 
-    // Actualizamos solo estado
-    $vehicleModel->update($id, ['status' => 'Inactive']);
+        // Actualizamos solo estado
+        $vehicleModel->update($id, ['status' => 'Inactive']);
 
-    return redirect()->to('/vehicles');
+        return redirect()->to('/vehicles');
     }
 
 
@@ -112,14 +101,14 @@ class Vehicles extends BaseController
 
 
     public function loadAllVehiclesfromUserLogged(){
-        $authResponse = $this->VerificationSessionAndRole();
-        if ($authResponse) {
-            return $authResponse; //Redirección si hay error
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verifications;
         }
+        
 
         $idUser = $this->session->get('user')['idUser'];
 
-        
         $vehicleModel = new VehiclesModel();
         $data['vehicles'] = $vehicleModel->getVehiclesByUser($idUser);
 

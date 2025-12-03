@@ -1,16 +1,20 @@
 <?php
 namespace App\Controllers;
+use App\Traits\AuthTrait;
 
 class Passenger extends BaseController
 {
+    use AuthTrait;
+
     public function searchRides()
     {
         $session = session();
 
-        //Verificar si hay sesión iniciada
-        if (!$session->has('user')) {
-            return redirect()->to('/')->with('error', 'noSession');
+        $Verification = $this->verifyPassenger();
+        if ($Verification !== null) {
+            return $Verifications;
         }
+
         return view('users/passenger/searchRides');
     }
 }

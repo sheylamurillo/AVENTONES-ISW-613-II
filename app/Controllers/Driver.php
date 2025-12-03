@@ -1,16 +1,22 @@
 <?php
+
 namespace App\Controllers;
+
+use App\Traits\AuthTrait;
 
 class Driver extends BaseController
 {
+    use AuthTrait;
+
     public function bookings()
     {
-        $session = session();
-
-        //Verificar si hay sesión iniciada
-        if (!$session->has('user')) {
-            return redirect()->to('/')->with('error', 'noSession');
+    
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verifications; // Redirección si no está logueado o no es driver
         }
+
         return view('users/driver/bookings');
     }
 }
+
