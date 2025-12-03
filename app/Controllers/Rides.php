@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\RidesModel;
+use App\Models\ReportModel;
 
 
 class Rides extends BaseController
@@ -11,7 +12,68 @@ class Rides extends BaseController
     {
 
     }
-    
+
+
+
+    //-----------------------------------SEARCH REPORT---------------------------
+
+    //se encarga de cargar los datos del reporte de acuerdo a un rango de fechas que viene por el formulario
+    public function loadSearchReportByDate()
+    {
+        $reportModel = new ReportModel();
+        $data = ['search' => [], 'dateFrom' => '',
+            'dateTo' => ''];
+         if ($this->request->getMethod() === 'POST') {
+            $date1 = $this->request->getPost('dateFrom');
+            $date2 = $this->request->getPost('dateTo');
+
+           
+            $data = [
+            'search' => $reportModel->getSearchResultByDate($date1, $date2),
+            'dateFrom' => $date1,
+            'dateTo' => $date2
+            ];
+         }
+        return view('users/administrator/searchReport', $data);
+    }
+
+    //se encarga de guardar las búsquedas realizadas por el usuario, en caso de que el usuario sea 0 se guarda cuál fue el id de la búsqueda generada para
+    //actualizar después esa búsqueda que originalmente guardó el usuario en 0 porque viene de search publico
+    private function saveSearch($idUser, $origin, $destination, $resultsCount)
+    {
+        $reportModel = new ReportModel();
+
+        $autoIdBD = $reportModel->insertSearch([
+            'idUser'        => $idUser,
+            'origin'        => $origin,
+            'destination'   => $destination,
+            'results_count' => $resultsCount
+        ]);
+
+      
+        if ($idUser == 0) {
+            session()->set('last_public_search_id', $autoIdBD);
+        }
+    }
+
+    //actualiza el id del usuario quien realizó primero la búsqueda en el search publico
+    private function updatePublicSearch($idUser)
+    {
+        $session = session();
+        $reportModel = new ReportModel();
+
+        $lastId = $session->get('last_public_search_id');
+
+        if ($lastId) {
+            $reportModel->updateSearchUser($lastId, $idUser);
+            $session->remove('last_public_search_id'); 
+        }
+    }
+  
+   
+
+    //-----------------------------------SEARCH RIDES----------------------------
+
     // Obtiene los orígenes y destinos desde el modelo y los prepara para ser usados en los select de la vista.
     public function loadSelectOptions (){
         $ridesModel = new RidesModel();
@@ -62,10 +124,26 @@ class Rides extends BaseController
 
     // Carga los datos necesarios para la vista Search Rides.Si no hay POST, inicializa los valores por defecto. Finalmente envía todo a la vista.
     public function loadData(bool $isPublic){
+        $session = session();
         $data = $this->loadSelectOptions();
         if ($this->request->getMethod() === 'POST') {
+
             $data = array_merge($data, $this->processFilters());
-        } 
+
+            $origin        = $data['originSelected'] ?: 'No seleccionado';
+            $destination   = $data['destinationSelected'] ?: 'No seleccionado';
+            $resultsCount  = count($data['rides']);
+
+            if ($isPublic) {
+               
+               $this->saveSearch(null, $origin, $destination, $resultsCount);
+            } 
+            else {
+               
+                $idUser = $session->get('user')['idUser'];
+                $this->saveSearch($idUser, $origin, $destination, $resultsCount);
+            }
+        }
         else {
             $data['rides']               = [];
             $data['originSelected']      = '';
@@ -78,11 +156,16 @@ class Rides extends BaseController
         return view('searchRides/searchRides', $data);
     }
 
-
     //Sirve para que el user no tenga que repetir la búsqueda de cuando hizo el filtro en search public, cuando inicia sesión se mantendrá la búsqueda realiza en el search publico
     private function loadDataFromSavedFilters($filters)
     {
+        $session = session();
         $rideModel = new RidesModel();
+
+        $idUser = $session->get('user')['idUser'];
+
+      
+        $this->updatePublicSearch($idUser);
 
         $rides = $rideModel->filter(
             $filters['from'],
@@ -92,18 +175,19 @@ class Rides extends BaseController
             $filters['order'] ?? 'ASC'
         );
 
-        $data = $this->loadSelectOptions();
 
-        $data['rides'] = $rides;
-        $data['originSelected'] = $filters['from'];
+        $data = $this->loadSelectOptions();
+        $data['rides']               = $rides;
+        $data['originSelected']      = $filters['from'];
         $data['destinationSelected'] = $filters['to'];
-        $data['days'] = $filters['days'] ?? [];
-        $data['order'] = $filters['order'] ?? 'ASC';
-        $data['orderBy'] = $filters['orderBy'] ?? 'departureTime';
-        $data['isPublic'] = false;
+        $data['days']                = $filters['days'] ?? [];
+        $data['order']               = $filters['order'] ?? 'ASC';
+        $data['orderBy']             = $filters['orderBy'] ?? 'departureTime';
+        $data['isPublic']            = false;
 
         return view('searchRides/searchRides', $data);
     }
+
 
     /* Carga la búsqueda privada de Rides. Si existen filtros guardados desde la búsqueda pública,se cargan esos resultados . Si no,
     simplemente se muestra la vista privada vacía o con datos por defecto*/
@@ -111,6 +195,7 @@ class Rides extends BaseController
         $session = session();
         if ($session->has('filters_public')) {
             $filters = $session->get('filters_public');
+
             $session->remove('filters_public');
             return $this->loadDataFromSavedFilters($filters);
         }
@@ -122,7 +207,7 @@ class Rides extends BaseController
     public function searchRidesPublic(){
         $session = session();
 
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
 
         $session->set('filters_public', [
             'from'      => $this->request->getPost('from'),

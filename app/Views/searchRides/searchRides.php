@@ -130,7 +130,7 @@
                                 </td>
                             <?php else: ?>
                                 <td>
-                                    <a href="<?= base_url('login?redirect=searchRides') ?>">Login to request</a>
+                                    <a href="<?= base_url('login?req=1') ?>">Login to request</a>
                                 </td>
                                 
                             <?php endif; ?>

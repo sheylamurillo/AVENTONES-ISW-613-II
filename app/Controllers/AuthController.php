@@ -7,6 +7,12 @@ use App\Models\UsersModel;
 class AuthController extends BaseController
 {
     public function login(){
+        $session = session();
+        
+        // si no viene del login de search publico eliminar los datos de busqueda
+        if ($this->request->getGet('req') != 1) {
+            $session->remove('filters_public');
+        }
         return view('auth/login');
     }
 
