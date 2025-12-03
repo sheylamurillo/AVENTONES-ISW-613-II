@@ -31,31 +31,46 @@
                 </div>
 
                 <?php 
-                $error = session()->getFlashdata('error'); //se almacena en una variable, ya que una vez se lee, se destruye
-                if($error): ?>
+                    $error = session()->getFlashdata('error');
+                    $success = session()->getFlashdata('success');
+                ?>
+
+                    <?php if ($error): ?>
                     <p id="loginError">
                         <?php
-                        switch($error) {
-                            case "password": echo "Incorrect password"; break;
-                            case "inactive": echo "Your account is inactive"; break;
-                            case "pending": echo "Account pending approval"; break;
-                            case "notfound": echo "User not found"; break;
-                            case "noSession": echo "You must log in"; break;
-                            case "permission": echo "You do not have permissions to access"; break;
-                        }
+                            switch($error) {
+                                case "password": echo "Incorrect password"; break;
+                                case "inactive": echo "Your account is inactive"; break;
+                                case "pending": echo "Account pending approval"; break;
+                                case "notfound": echo "User not found"; break;
+                                case "noSession": echo "You must log in"; break;
+                                case "permission": echo "You do not have permissions to access"; break;
+                            }
                         ?>
                     </p>
-                <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php if ($success): ?>
+                    <p id="successMesssage">
+                        <?php
+                            switch ($success) {
+                                case "linkSent": echo "A login link has been sent to your email."; break;
+                            }
+                        ?>
+                    </p>
+                    <?php endif; ?>
 
 
 
 
                 <p>Not a user? <a href="<?= base_url('auth/registerPassenger') ?>">Register Now</a></p>
-                <p><a href="<?= base_url('searchRides/public') ?>">View Public Rides</a></p>
+            
+                <p><a href="<?= base_url('searchRides/public') ?>">Public Rides</a></p>
 
 
                 <div class="contButton">
-                    <button type="submit" class="button">Login</button>
+                    <button type="submit" name="action" value="login" class="button">Login</button>
+                    <button type="submit" name="action" value="passwordless" class="button-alt">PasswordLess </button>
                 </div>
 
             </form>

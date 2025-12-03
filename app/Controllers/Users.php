@@ -131,8 +131,10 @@ class Users extends BaseController
     {
         $model = new UsersModel();
         $result = $model->activateUser($token);
-        return view('activateAccount/activateAccount');
+        return view('statusPages/activateAccount');
     }
+
+    
 
 
 }

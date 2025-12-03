@@ -7,6 +7,9 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 
+//LOGIN PASSWORD LESS
+$routes->get('passwordless/login/(:any)', 'AuthController::passwordlessLogin/$1');
+
 //ACTIVATE AACCOUNT
 $routes->get('activate/(:any)', 'Users::activate/$1');
 
