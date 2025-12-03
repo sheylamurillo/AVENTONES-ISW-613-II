@@ -16,6 +16,13 @@ class RidesModel extends Model
         'idVehicle'
     ];
 
+    public function loadRidesByUser($idUser)
+    {
+        return $this->select('*')
+                    ->where('idUser', $idUser)
+                    ->findAll();
+    }
+
     /*Obtiene los datos de la columna de puntos de origen, luego serán cargadas en un select */
     public function getOrigin()
     {

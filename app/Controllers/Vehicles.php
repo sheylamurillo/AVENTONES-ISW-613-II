@@ -12,7 +12,7 @@ class Vehicles extends BaseController
     public function storeVehicle(){
        $Verification = $this->verifyDriver();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
 
         $data = $this->request->getPost();
@@ -39,7 +39,11 @@ class Vehicles extends BaseController
 
 
     public function editVehicle($id){
-    if ($r = $this->verifyDriver()) return $r;
+    $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
+        
 
     $vehicleModel = new VehiclesModel();
     $vehicle = $vehicleModel->find($id);
@@ -53,7 +57,7 @@ class Vehicles extends BaseController
     {
        $Verification = $this->verifyDriver();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
         
 
@@ -83,7 +87,7 @@ class Vehicles extends BaseController
     public function inactivateVehicle($id){
        $Verification = $this->verifyDriver();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
         
 
@@ -103,7 +107,7 @@ class Vehicles extends BaseController
     public function loadAllVehiclesfromUserLogged(){
         $Verification = $this->verifyDriver();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
         
 
@@ -118,6 +122,10 @@ class Vehicles extends BaseController
     }
 
     public function newVehicle(){
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
 
         return view('users/driver/newVehicle');
     }

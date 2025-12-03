@@ -1,17 +1,199 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\VehiclesModel;
 use App\Models\RidesModel;
+use App\Models\UsersModel;
 use App\Models\ReportModel;
+use App\Traits\AuthTrait;
 
 
 class Rides extends BaseController
 {
+    use AuthTrait;
 
-    public function index()
-    {
+
+    public function loadAllRidesfromUserLogged(){
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
+        
+
+        $idUser = $this->session->get('user')['idUser'];
+
+        $ridesModel = new RidesModel();
+        $data['rides'] = $ridesModel->loadRidesByUser($idUser);
+
+        return view('rides/myRides', $data);
+
 
     }
+
+    public function newRide(){
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
+        
+        $idUser = $this->session->get('user')['idUser'];
+
+
+        $modelVehicles = new VehiclesModel();
+        $data['vehicles'] = $modelVehicles->getVehiclesByUser($idUser);
+        return view('rides/newRide', $data);
+
+    }
+
+    public function storeRide(){
+       $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
+
+        $data = $this->request->getPost();
+         return $this->saveRide($data);
+    }
+
+
+
+
+	private function saveRide($data)
+    {
+    
+        $plate = $data['plate'];
+
+        //Obtenemos el idVehicle según la placa
+        $VehicleModel = new VehiclesModel();
+        $idVehicle = $VehicleModel->getIdVehByPlate($plate);
+
+
+        //Capturé los datos asi, ya que me estaba dando problema
+        $rideData = [
+            'idUser'         => $this->session->get('user')['idUser'],
+            'origin'         => $data['departure-from'],
+            'destination'    => $data['arrive-to'],
+            'departureTime'  => $data['time'],
+            'rideDate'       => implode(',', $data['days']), 
+            'costPerSeat'    => $data['fee'],
+            'availableSeats' => $data['seats'],
+            'idVehicle'      => $idVehicle,
+            'status'         => 'Active'
+        ];
+
+        //Se guarda el ride
+        $RideModel = new RidesModel();
+        $RideModel->save($rideData);
+
+        return redirect()->to('/rides');
+    }
+
+
+    public function editRide($idRide)
+    {
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
+
+        $rideModel = new RidesModel();
+        $vehicleModel = new VehiclesModel();
+
+        $ride = $rideModel->find($idRide);
+       
+        $idUser = $this->session->get('user')['idUser'];
+        $vehicles = $vehicleModel->getVehiclesByUser($idUser);
+
+        $data = [
+            'ride'     => $ride,
+            'vehicles' => $vehicles,
+            'days'     => ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+            'selectedDays' => explode(',', $ride['rideDate'])
+        ];
+
+        return view('rides/editRide', $data);
+    }
+
+    public function updateRide($idRide)
+    {
+        //Validacion
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
+
+        $rideModel = new RidesModel();
+        $vehicleModel = new VehiclesModel();
+
+        $data = $this->request->getPost();
+
+        $plate = $data['plate'];
+        $idVehicle = $vehicleModel->getIdVehByPlate($plate); //Buscamos el id con la placa
+
+       //armamos el arreglo con los datos
+        $rideData = [
+            'origin'         => $data['origin'],
+            'destination'    => $data['destination'],
+            'departureTime'  => $data['departureTime'],
+            'rideDate'       => implode(',', $data['days']),
+            'costPerSeat'    => $data['costPerSeat'],
+            'availableSeats' => $data['availableSeats'],
+            'idVehicle'      => $idVehicle,
+            'status'         => 'Active' 
+        ];
+
+        
+        $rideModel->update($idRide, $rideData);
+
+        return redirect()->to('/rides');
+    }
+
+
+
+     public function rideDetails($idRide)
+    {
+       
+        $rideModel     = new RidesModel();
+        $vehicleModel  = new VehiclesModel();
+        $userModel     = new UsersModel();
+
+        $ride = $rideModel->find($idRide);
+
+
+        // Obtener vehículo del ride
+        $vehicle = $vehicleModel->find($ride['idVehicle']);
+
+        // Obtener driver del ride
+        $driver = $userModel->select('name, lastName, picture')
+                            ->where('idUser', $ride['idUser'])
+                            ->first();
+
+        $data = [
+            'ride'         => $ride,
+            'vehicle'      => $vehicle,
+            'driver'       => $driver,
+            'rideDays'     => explode(',', $ride['rideDate']),
+            'days'         => ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+            'role'         => $this->session->get('user')['role']
+        ];
+
+        return view('rides/rideDetails', $data);
+    }
+
+    public function inactivate($idRide)
+    {
+        $Verification = $this->verifyDriver();
+        if ($Verification !== null) {
+            return $Verification;
+        }
+        $rideModel = new RidesModel();
+
+        $rideModel->update($idRide, ['status' => 'Inactive']);
+        
+        return redirect()->to('/rides');
+    }
+
+
 
 
 

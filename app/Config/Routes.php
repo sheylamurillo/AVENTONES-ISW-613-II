@@ -67,3 +67,15 @@ $routes->post('vehicles/update/(:num)', 'Vehicles::updateVehicle/$1');
 $routes->get('vehicles/inactivate/(:num)', 'Vehicles::inactivateVehicle/$1');
 
 
+//Rides
+$routes->get('rides', 'Rides::loadAllRidesfromUserLogged');
+$routes->get('rides/editRide/(:num)', 'Rides::editRide/$1');
+$routes->post('rides/update/(:num)', 'Rides::updateRide/$1');
+$routes->get('rides/inactivate/(:num)', 'Rides::inactivate/$1');
+$routes->get('rides/newRide', 'Rides::newRide');
+$routes->post('rides/store', 'Rides::storeRide');
+$routes->get('rides/rideDetails/(:num)', 'Rides::rideDetails/$1');
+
+
+
+

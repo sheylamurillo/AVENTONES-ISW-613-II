@@ -22,4 +22,13 @@ class VehiclesModel extends Model
                     ->where('status', 'Active')
                     ->findAll();
     }
+
+   public function getIdVehByPlate($plate)
+   {
+        return $this->select('idVehicle')
+                    ->where('plateNumber', $plate)
+                    ->where('status', 'Active')
+                    ->first()['idVehicle'] ?? null;
+    }
+
 }
