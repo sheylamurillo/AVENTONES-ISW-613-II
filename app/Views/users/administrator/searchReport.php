@@ -24,7 +24,7 @@
 
             <div class="navigation-cont">
                 <div class="user-menu">
-                    <img src="<?= base_url('uploads/logo.png') ?>" class="navigation-image" alt="User icon">
+                    <img src="<?= base_url('uploads/user.png') ?>" class="navigation-image" alt="User icon">
                     <nav class="menu-hover">
                         <ul>
 
