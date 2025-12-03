@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\UsersModel;
 use App\Models\ConfigurationModel;
+use App\Libraries\Email;
 
 class Users extends BaseController
 {
@@ -17,7 +18,7 @@ class Users extends BaseController
     {
         $data = $this->request->getPost();
         $data['role'] = 'Driver'; 
-
+         return $this->saveUser($data);
     }
         
         public function storeAdmin()
@@ -48,13 +49,34 @@ class Users extends BaseController
 
         $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
         $data['token'] = bin2hex(random_bytes(16));
-        $data['status'] = 'pending';
         unset($data['repeat-password']); //No guarde el campo de repeat pass
 
-        $model = new UsersModel();
-        $model->save($data);
+        if ($data['role'] == 'Admin') {
+            $data['status'] = 'active';
+        } else {
+            $data['status'] = 'pending';
+        }
 
-        return redirect()->to('/'); //pagina de espera a confirmacion de cuenta (Sheyla)
+        $model = new UsersModel();
+        $result = $model->save($data);
+       
+        if ($result && $data['role'] != 'Admin') {
+            $this->sendActivationEmail( $data['gmail'],$data['name'], $data['token'] );
+        }
+        
+        return redirect()->to('login'); //pagina de espera a confirmacion de cuenta (Sheyla)
+    }
+
+    private function sendActivationEmail($email, $firstName, $token)
+    {
+        $emailService = new Email();
+
+        $activationLink = base_url("activate/{$token}");
+
+        $subject = "Hello $firstName! Activate your account now";
+
+        $body = " Link:  <a href='{$activationLink}'>{$activationLink}</a>";
+        $emailService->send($email, $firstName, $subject, $body);
     }
 
 
@@ -103,6 +125,15 @@ class Users extends BaseController
         $data['configuration'] = $configuration; 
         return view('configuration/configuration', $data); 
     } 
+
+    //Este método sirve para activar la cuenta de un usuario
+    public function activate($token)
+    {
+        $model = new UsersModel();
+        $result = $model->activateUser($token);
+        return view('activateAccount/activateAccount');
+    }
+
 
 }
 
