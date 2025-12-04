@@ -107,5 +107,28 @@ class RidesModel extends Model
                 ->getResultArray();
     }
 
+    //obtiene los bookings que se encuentran pendientes despues de x mintuos , este método es utilizado en el script
+    public function getPendingBookings($minutes){
+        return $this->select("
+                        uD.name AS driver_name,
+                        uD.lastName AS driver_lastName, 
+                        uD.gmail AS driver_email,
+                        rides.origin, 
+                        rides.destination, 
+                        rides.rideDate, 
+                        rides.departureTime,
+                        b.dateTime AS booking_time,
+                        uC.name AS client_name, 
+                        uC.lastName AS client_lastName
+                    ")
+                    ->join('bookings b', 'rides.idRide = b.idRide')
+                    ->join('users uD', 'rides.idUser = uD.idUser')
+                    ->join('users uC', 'b.idUser = uC.idUser')
+                    ->where('b.status', 'pending')
+                    ->where("TIMESTAMPDIFF(MINUTE, b.dateTime, NOW()) >", $minutes)
+                    ->get()
+                    ->getResultArray();
+
+    }
     
 }
