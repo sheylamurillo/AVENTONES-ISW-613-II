@@ -1,64 +1,85 @@
-<<<<<<< HEAD
-# CodeIgniter 4 Framework
+# Nombre del proyecto: Aventones V2.
 
-## What is CodeIgniter?
+## Objetivo principal del proyecto:
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+- Desarrollar un prototipo funcional de una aplicación web que integre los conocimientos adquiridos en programación web.  
 
-This repository holds the distributable version of the framework.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- El proyecto incluye una interfaz web, una base de datos MySQL y la utilización de PHP como lenguaje principal. Además, para la V2 de este proyecto el desarrollo se estructura siguiendo el patrón de arquitectura Modelo–Vista–Controlador (MVC), lo que permite una organización modular y una mejor separación de responsabilidades dentro del sistema. Para su implementación, se utiliza el framework CodeIgniter, que facilita la gestión de rutas, controladores, modelos, vistas y buenas prácticas de desarrollo web.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Funcionalidad General (V1 + V2):
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- **Tres tipos de roles:** pasajeros, conductores y administradores.  
 
-## Important Change with index.php
+- **Proceso de registro:** los usuarios de tipo pasajero o conductor que no tengan acceso podrán registrarse en el sistema mediante un formulario visible desde la pantalla de inicio de sesión.  Una vez completado el registro, su cuenta quedará en estado pendiente. El usuario deberá activar su cuenta a través de un enlace enviado a su correo electrónico personal.
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+- **Gestión de rides:** CRUD completo (crear, leer, actualizar y eliminar) de viajes.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+- **Gestión de vehículos:** CRUD completo de vehículos asociados a los conductores.
 
-**Please** read the user guide for a better explanation of how CI4 works!
+- **Reservas:** los usuarios pasajeros pueden realizar reservas desde la pantalla de búsqueda de rides.  
+  Tanto los conductores como los clientes pueden visualizar las reservas asociadas a su usuario (activas y pasadas).  
+  Si la reserva ya fue aceptada por el conductor, el cliente aún puede cancelarla.
 
-## Repository Management
+- **Búsqueda de rides:** existe una página pública y privada que permite filtrar viajes por origen, destino y fecha, con opción de ordenamiento ascendente o descendente. Los usuarios no registrados pueden consultar información general de los viajes.Además,Las búsquedas realizadas (públicas o privadas) se registran en un reporte.
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+- **Gestión de usuarios:** los usuarios pueden actualizar su información personal en cualquier momento.
 
-## Contributing
+- **Panel de administración:** los administradores pueden visualizar la lista de usuarios, desactivar cuentas y crear nuevos administradores.
 
-We welcome contributions from the community.
+- **Script:** el sistema cuenta con un script que identifica las reservas pendientes que han pasado cierta cantidad de minutos desde su creación y envía un correo de recordatorio al conductor.
 
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
 
-## Server Requirements
+## Nuevos Features Introducidos en Aventones V2
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+- **Inicio de sesión sin contraseña:** el usuario puede seleccionar la opción "Passwordless", ingresar su correo electrónico y recibir un enlace único en su email. Si existe un usuario asociado, el sistema enviará un vínculo especial que permite iniciar sesión sin ingresar contraseña. Este enlace es de un solo uso: una vez utilizado, queda invalidado automáticamente.
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+- **Reporte de búsquedas:** el administrador puede generar un reporte por rango de fechas, visualizando: fecha de búsqueda, usuario que realizó la búsqueda (o “Usuario no reconocido” si fue realizado desde la búsqueda pública), lugar de salida, lugar de llegada, cantidad de resultados obtenidos.
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+## Librerías instalación:
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
-=======
-# AVENTONES-ISW-613-II
->>>>>>> b0edcbdf0bd3dedc51211252af6821331154665f
+# PHPMailer
+
+El proyecto utiliza PHPMailer para el envío de correos electrónicos (como notificaciones y activaciones de cuenta).
+
+Para instalarlo correctamente, sigue los siguientes pasos:
+
+1. **Instalar Composer**  
+   Composer es un gestor de dependencias para PHP, necesario para instalar PHPMailer.  
+   Se descarga en el siguiente link:
+   [https://getcomposer.org/Composer-Setup.exe](https://getcomposer.org/Composer-Setup.exe)
+
+2. **Configurar la ruta de PHP durante la instalación**  
+   Asegúrate de indicar la siguiente ruta cuando el instalador lo solicite:C:\xampp\php\php.exe
+
+3. **Marcar la opción:**  
+Add Composer to the PATH, esto permite utilizar Composer desde cualquier terminal, incluyendo la de Visual Studio Code.
+
+4. **Verificar la instalación de Composer**  
+Ejecuta el siguiente comando en la terminal: composer -V
+
+5. **Instalar la librería PHPMailer**  
+Una vez confirmado que Composer está instalado correctamente, ejecuta: composer require phpmailer/phpmailer
+
+## Framework instalación:
+
+1. **Descargar CodeIgniter 4**
+Se obtiene desde la página oficial: https://codeigniter.com/download
+
+2. **Descomprimir el archivo descargado**
+Se extrajo el contenido del ZIP dentro del directorio del proyecto, por ejemplo: C:\xampp\htdocs\ISW-613\proyectoIIAventones\
+
+3. **Configurar el Virtual Host en Apache (XAMPP)**
+Para ejecutar el proyecto en un dominio local más limpio y organizado, se configuró un Virtual Host dentro del archivo: C:\xampp\apache\conf\extra\httpd-vhosts.conf
+
+4. **Registrar el dominio local en el archivo hosts**
+Para que el navegador reconozca el dominio definido en Apache, se editó el archivo: C:\Windows\System32\drivers\etc\hosts
+
+5. **Verificar el funcionamiento del framework**
+Una vez reiniciado, se ingresó en el navegador: http://aventonesisw.local/
+
+6. **Configurar base_url en CodeIgniter**
+En app/Config/App.php, se ajustó el valor: public $baseURL = http://aventonesisw.local/;
+
+
