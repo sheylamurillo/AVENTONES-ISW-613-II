@@ -12,9 +12,9 @@ class Passenger extends BaseController
 
         $Verification = $this->verifyPassenger();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
-
-        return view('users/passenger/searchRides');
+         $data['active'] = 'home';
+        return $this->render('searchRides/searchRides', $data);
     }
 }

@@ -13,10 +13,11 @@ class Driver extends BaseController
     
         $Verification = $this->verifyDriver();
         if ($Verification !== null) {
-            return $Verifications; // Redirección si no está logueado o no es driver
+            return $Verification; // Redirección si no está logueado o no es driver
         }
 
-        return view('users/driver/bookings');
+        $data['active'] = 'bookings';
+        return $this->render('users/driver/bookings', $data);
     }
 }
 
