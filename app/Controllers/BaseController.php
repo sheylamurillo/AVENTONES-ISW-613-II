@@ -59,4 +59,34 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = service('session');
     }
+    protected function render(string $view, array $data = [])
+    {
+        $session = session();
+
+        if (!$session->has('user')) {
+            $header = 'layouts/headerSearchPublic';
+        } else {
+            $role = $session->get('user')['role'];
+
+            switch ($role) {
+                case 'Driver':
+                    $header = 'layouts/headerDriver';
+                    break;
+                case 'Passenger':
+                    $header = 'layouts/headerPassenger';
+                    break;
+                case 'Admin':
+                    $header = 'layouts/headerAdmin';
+                    break;
+                default:
+                    $header = 'layouts/headerSearchPublic';
+            }
+    }
+
+    
+    return view($header, $data)
+         . view($view, $data)
+         . view('layouts/footer');
+}
+
 }

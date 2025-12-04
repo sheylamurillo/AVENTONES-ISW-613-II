@@ -25,8 +25,8 @@ class Rides extends BaseController
         $ridesModel = new RidesModel();
         $data['rides'] = $ridesModel->loadRidesByUser($idUser);
 
-        return view('rides/myRides', $data);
-
+        $data['active'] = 'rides';
+        return $this->render('rides/myRides', $data);
 
     }
 
@@ -41,7 +41,8 @@ class Rides extends BaseController
 
         $modelVehicles = new VehiclesModel();
         $data['vehicles'] = $modelVehicles->getVehiclesByUser($idUser);
-        return view('rides/newRide', $data);
+        $data['active'] = 'rides';
+        return $this->render('rides/newRide', $data);
 
     }
 
@@ -111,7 +112,8 @@ class Rides extends BaseController
             'selectedDays' => explode(',', $ride['rideDate'])
         ];
 
-        return view('rides/editRide', $data);
+        $data['active'] = 'rides';
+        return $this->render('rides/editRide', $data);  
     }
 
     public function updateRide($idRide)
@@ -177,7 +179,8 @@ class Rides extends BaseController
             'role'         => $this->session->get('user')['role']
         ];
 
-        return view('rides/rideDetails', $data);
+        $data['active'] = 'rides';
+        return $this->render('rides/rideDetails', $data);
     }
 
     public function inactivate($idRide)
@@ -215,8 +218,10 @@ class Rides extends BaseController
             'dateFrom' => $date1,
             'dateTo' => $date2
             ];
+
          }
-        return view('users/administrator/searchReport', $data);
+        $data['active'] = 'searchReport';
+        return $this->render('users/administrator/searchReport', $data);
     }
 
     //se encarga de guardar las búsquedas realizadas por el usuario, en caso de que el usuario sea 0 se guarda cuál fue el id de la búsqueda generada para
@@ -334,8 +339,8 @@ class Rides extends BaseController
             $data['order']               = 'ASC';
             $data['orderBy']             = 'departureTime';
         }
-        $data['isPublic'] = $isPublic;
-        return view('searchRides/searchRides', $data);
+       $data['isPublic'] = $isPublic;
+       return $data;
     }
 
     //Sirve para que el user no tenga que repetir la búsqueda de cuando hizo el filtro en search public, cuando inicia sesión se mantendrá la búsqueda realiza en el search publico
@@ -366,8 +371,9 @@ class Rides extends BaseController
         $data['order']               = $filters['order'] ?? 'ASC';
         $data['orderBy']             = $filters['orderBy'] ?? 'departureTime';
         $data['isPublic']            = false;
+        $data['active']              = 'home';
 
-        return view('searchRides/searchRides', $data);
+        return $this->render('searchRides/searchRides', $data);
     }
 
 
@@ -377,11 +383,14 @@ class Rides extends BaseController
         $session = session();
         if ($session->has('filters_public')) {
             $filters = $session->get('filters_public');
+           
 
             $session->remove('filters_public');
             return $this->loadDataFromSavedFilters($filters);
         }
-        return $this->loadData(false);
+        $data = $this->loadData(false);
+        $data['active'] = 'home';
+        return $this->render('searchRides/searchRides', $data);
     }
 
 
@@ -399,7 +408,9 @@ class Rides extends BaseController
             'orderBy'   => $this->request->getPost('orderBy'),
         ]);
     }
-        return $this->loadData(true);
+        $data = $this->loadData(true);
+        $data['active'] = '';
+        return $this->render('searchRides/searchRides', $data);
     }
 
 }

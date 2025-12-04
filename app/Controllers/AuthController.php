@@ -15,7 +15,8 @@ class AuthController extends BaseController
         if ($this->request->getGet('req') != 1) {
             $session->remove('filters_public');
         }
-        return view('auth/login');
+        $data['active'] = ''; 
+        return view('auth/login', $data);
     }
 
     public function registerPassenger(){
@@ -84,7 +85,7 @@ class AuthController extends BaseController
                 return redirect()->to('/vehicles');
 
             case 'Passenger':
-                return redirect()->to('/passenger/searchRides');
+                return redirect()->to('searchRides/searchRides');
 
             case 'Admin':
                 return redirect()->to('/allUsers');

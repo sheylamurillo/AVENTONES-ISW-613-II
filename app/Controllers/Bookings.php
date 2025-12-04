@@ -4,8 +4,9 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use Config\Database;
 use App\Models\bookingsModel;
+use App\Controllers\BaseController;
 
-class Bookings extends Controller
+class Bookings extends BaseController
 {
 
     /* Carga el listado de reservas del usuario autenticado que vienen desde el modelo.También determina, 
@@ -33,7 +34,8 @@ class Bookings extends Controller
         }
 
         $data['bookings'] = $bookings;
-        return view('bookings/bookings', $data);
+        $data['active'] = 'bookings';
+        return $this->render('bookings/bookings', $data);
     }
 
     /*Este método recibe el ID de un ride, obtiene el ID del usuario actual y crea una reserva llamando al modelo.

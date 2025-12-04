@@ -12,34 +12,6 @@
 
 <body>
 
-<header>
-    <img src="<?= base_url('uploads/logo.png') ?>" class="design-logo" alt="Aventones Logo">
-
-    <div class="menu-cont">
-        <nav class="Head">
-            <ul>
-                <li><a href="">Home</a></li>
-                <li><a href="<?= base_url('rides') ?>" class="activo">Rides</a></li>
-                <li><a href="">Bookings</a></li>
-            </ul>
-        </nav>
-
-        <div class="navigation-cont">
-            <div class="user-menu">
-                <img src="<?= base_url('uploads/user.png') ?>" class="navigation-image" alt="">
-                <nav class="menu-hover">
-                    <ul>
-                        <li><a href="<?= base_url('logout') ?>">Logout</a></li>
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Configuration</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-
 <main>
     <h1>Ride Details</h1>
 
@@ -52,7 +24,7 @@
         </figcaption>
     </figure>
 
-    <form class="formm" method="POST" action="<?= base_url('bookings/request') ?>">
+    <form class="formm" method="POST" action="<?= base_url('bookings/create/' . $ride['idRide']) ?>">
 
         <input type="hidden" name="idRide" value="<?= $ride['idRide'] ?>">
 
@@ -122,11 +94,6 @@
     </form>
 
 </main>
-
-<footer>
-    <hr>
-    <p>&copy; 2025 Aventones.com</p>
-</footer>
 
 </body>
 </html>

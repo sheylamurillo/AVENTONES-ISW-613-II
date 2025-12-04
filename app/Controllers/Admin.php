@@ -16,14 +16,14 @@ class Admin extends BaseController
             return $Verification; // Redirección si no está logueado o no es driver
         }
 
-        
-
         $model = new UsersModel();
         $data['users'] = $model
             ->select('idUser, ID, name, lastName, role, status')
             ->findAll();
+        
+        $data['active'] = 'users';
 
-        return view('users/administrator/showAllUsers', $data);
+        return $this->render('users/administrator/showAllUsers', $data);
     }
 }
 

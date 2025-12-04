@@ -11,30 +11,6 @@
 </head>
 
 <body>
-    <header>
-        <img src="<?= base_url('uploads/logo.png') ?>" class="design-logo" alt="Aventones Logo">
-
-        <div class="menu-cont">
-            <nav class="Head" aria-label="Main menu">
-                <ul>
-                </ul>
-            </nav>
-
-            <div class="navigation-cont">
-                <div class="user-menu">
-                    <img src="<?= base_url('uploads/user.png') ?>" class="navigation-image" alt="User icon">
-                    <nav class="menu-hover">
-                        <ul>
-                            <li><a href="../actions/logout.php">Logout</a></li>
-                            <li><a href="editProfile.php">Profile</a></li>
-                            <li><a href="configuration.php">Configuration</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-
     <main>
         <h1>Configuration</h1>
         <form action="<?= base_url('configuration/save')?>" method="POST" id="configuration_form">
@@ -51,15 +27,6 @@
         </form>
     </main>
 
-    <footer>
-        <hr>
-        <nav aria-label="Footer navigation">
-            <a href="editProfile.php" class="foot">Profile</a> |
-            <a href="configuration.php" class="foot">Settings</a>
-        </nav>
-        <p>&copy; 2025 Aventones.com</p>
-
-    </footer>
 
 </body>
 

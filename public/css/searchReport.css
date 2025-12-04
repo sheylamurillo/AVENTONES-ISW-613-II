@@ -206,3 +206,101 @@ div.all-days{
 div > label {
     background: #ffffff;
 }
+
+section.section-search {
+    width: 94%;
+    margin: 30px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-family: var(--fuente-registro);
+}
+
+div.places {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 3%;
+}
+
+div.places label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+div.places input[type="date"] {
+    font-size: 18px;
+    padding: 14px 22px;
+    border: 1px solid #bfc4d1;
+    border-radius: 10px;
+    width: 250px;  
+    background: #ffffff;
+    color: #333;
+    font-family: var(--fuente-registro);
+
+}
+
+section.section-search {
+    width: 94%;
+    margin: 30px auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #d1d5db;
+    font-family: var(--fuente-registro);
+}
+
+
+div.places {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 60px; 
+    margin-left: 5%;
+}
+
+div.places label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+div.places input[type="date"] {
+    font-size: 18px;
+    padding: 14px 22px;
+    width: 260px;
+    border: 1px solid #c8ccd4;
+    border-radius: 10px;
+    background: #ffffff;
+    font-family: var(--fuente-registro);
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: .2s ease-in-out;
+}
+
+div.places input[type="date"]:hover {
+    border-color: #888;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+div.places input[type="date"]:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 3px 10px rgba(74,144,226,0.3);
+}
+
+
+div.places button {
+    font-size: 20px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background: #f4f4f4;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+div.places button:hover {
+    background: #e5e5e5;
+}

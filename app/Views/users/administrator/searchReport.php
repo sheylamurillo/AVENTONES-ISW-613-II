@@ -6,35 +6,12 @@
     <title>Search Report</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= base_url('css/generalStyle.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/searchRides.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/searchReport.css') ?>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
-    <header>
-        <img src="<?= base_url('uploads/logo.png') ?>" class="design-logo" alt="Aventones Logo">
-
-        <div class="menu-cont">
-            <nav class="Head" aria-label="Main menu">
-                <ul>
-
-                </ul>
-            </nav>
-
-            <div class="navigation-cont">
-                <div class="user-menu">
-                    <img src="<?= base_url('uploads/user.png') ?>" class="navigation-image" alt="User icon">
-                    <nav class="menu-hover">
-                        <ul>
-
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-
     <main>
 
         <h1>Search Report</h1>
@@ -50,7 +27,7 @@
                     <input type="date" id="dateFrom" name="dateFrom" value="<?= $dateFrom ?>">
 
                     <label>To</label>
-                    <input type="date" id="dateTo" name="dateTo" value="<?= $dateTo ?>">
+                    <input type="date" id="dateTo" name="dateTo"  value="<?= $dateTo ?>">
 
                     <button type="submit"> Find Search</button>
                 </div>
@@ -97,15 +74,6 @@
 
     </main>
 
-    <footer>
-        <hr>
-        <nav aria-label="Footer navigation">
-            <a href="editProfile.php" class="foot">Profile</a> |
-            <a href="configuration.php" class="foot">Settings</a>
-        </nav>
-        <p>&copy; 2025 Aventones.com</p>
-
-    </footer>
 
 </body>
 

@@ -13,32 +13,6 @@
 </head>
 
 <body>
-    <header>
-        <img src="<?= base_url('uploads/logo.png') ?>" class="design-logo" alt="Aventones Logo">
-
-        <div class="menu-cont">
-            <nav class="Head" aria-label="Main menu">
-                <ul>
-                    <li><a href="">Home</a></li>
-                    <li id="rides-navegation"><a href="" class="activo">Rides</a></li>
-                    <li><a href="">Bookings</a></li>
-                </ul>
-            </nav>
-
-            <div class="navigation-cont">
-                <div class="user-menu">
-                    <img src="<?= base_url('uploads/user.png') ?>" class="navigation-image" alt="User icon">
-                    <nav class="menu-hover">
-                        <ul>
-                            <li><a href="" id="logout-link">Logout</a></li>
-                            <li><a href="">Profile</a></li>
-                            <li><a href="" class="activo">Configuration</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
     <main>
         <h1>All Users</h1>
 
@@ -81,19 +55,7 @@
         </table>
     </main>
 
-    <footer>
-        <hr>
-        <nav aria-label="Footer navigation">
-            <a href="" class="foot">Home</a> |
-            <a href="" class="foot">Rides</a> |
-            <a href="" class="foot">Bookings</a> |
-            <a href="" class="foot">Settings</a> |
-            <a href="" class="foot">Login</a> |
-            <a href="" class="foot">Register</a>
-        </nav>
-        <p>&copy; 2025 Aventones.com</p>
 
-    </footer>
     <script src="<?= base_url('js/updateStatusCheckBox.js') ?>"></script>
 </body>
 </html>

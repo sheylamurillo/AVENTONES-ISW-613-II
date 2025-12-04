@@ -49,7 +49,8 @@ class Vehicles extends BaseController
     $vehicle = $vehicleModel->find($id);
 
     $data['vehicle'] = $vehicle;
-    return view('users/driver/editVehicles', $data);
+    $data['active'] = 'vehicles';
+    return $this->render('users/driver/editVehicles', $data);
     }
 
 
@@ -115,8 +116,8 @@ class Vehicles extends BaseController
 
         $vehicleModel = new VehiclesModel();
         $data['vehicles'] = $vehicleModel->getVehiclesByUser($idUser);
-
-        return view('users/driver/myVehicles', $data);
+        $data['active'] = 'vehicles';
+        return $this->render('users/driver/myVehicles', $data);
 
 
     }
@@ -126,8 +127,8 @@ class Vehicles extends BaseController
         if ($Verification !== null) {
             return $Verification;
         }
-
-        return view('users/driver/newVehicle');
+        $data['active'] = 'vehicles';
+        return $this->render('users/driver/newVehicle',$data);
     }
 
         

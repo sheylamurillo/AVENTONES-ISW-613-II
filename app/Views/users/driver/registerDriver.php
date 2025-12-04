@@ -9,9 +9,6 @@
 </head>
 
 <body>
-    <header>
-        <img src="<?= base_url('uploads/logo.png') ?>" class="image" alt="Aventones Logo" />
-    </header>
 
     <main>
         <h1>Rider Registration</h1>
@@ -74,20 +71,6 @@
         </form>
 
     </main>
-    
-    <footer>
-        <hr>
-        <nav aria-label="Footer navigation">
-            <a href="" class="foot">Home</a> |
-            <a href="" class="foot">Rides</a> |
-            <a href="" class="foot">Bookings</a> |
-            <a href="" class="foot">Settings</a> |
-            <a href="" class="foot">Login</a> |
-            <a href="" class="foot">Register</a>
-        </nav>
-        <p>&copy; 2025 Aventones.com</p>
-
-    </footer>
 </body>
 
 </html>

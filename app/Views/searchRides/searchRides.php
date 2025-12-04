@@ -12,34 +12,12 @@
 </head>
 
 <body>
-    <header>
-        <img src="<?= base_url('uploads/logo.png') ?>" class="design-logo" alt="Aventones Logo">
-
-        <div class="menu-cont">
-            <nav class="Head" aria-label="Main menu">
-                <ul>
-                  
-                </ul>
-            </nav>
-
-            <div class="navigation-cont">
-                <div class="user-menu">
-                    <img src="<?= base_url('uploads/logo.png') ?>" class="navigation-image" alt="User icon">
-                    <nav class="menu-hover">
-                        <ul>
-                           
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <main>
 
         <h1>Search Rides</h1>
 
-        <form id="search-form" method="POST" action="<?= $isPublic ? base_url('searchRides/public') : base_url('searchRides') ?>">>
+        <form id="search-form" method="POST" action="<?= $isPublic ? base_url('searchRides/public') : base_url('searchRides/searchRides') ?>">>
 
             <section class="section-search">
 
@@ -115,7 +93,7 @@
                         <tr>
                             <?php if (!$isPublic): ?>
                                 <td><?= $ride['name'] . " " . $ride['lastName'] ?></td>
-                                <td><a href="<?= base_url('rideDetails/' . $ride['idRide']) ?>"> <?= $ride['origin'] ?></a></td>
+                                <td><a href="<?= base_url('rides/rideDetails/' . $ride['idRide']) ?>"> <?= $ride['origin'] ?></a></td>
                             <?php else: ?>
                                 <td><?= $ride['origin'] ?></td>
                             <?php endif; ?>
@@ -156,16 +134,6 @@
         </section>
 
     </main>
-
-    <footer>
-        <hr>
-        <nav aria-label="Footer navigation">
-            <a href="editProfile.php" class="foot">Profile</a> |
-            <a href="configuration.php" class="foot">Settings</a> 
-        </nav>
-        <p>&copy; 2025 Aventones.com</p>
-
-    </footer>
 
 </body>
 

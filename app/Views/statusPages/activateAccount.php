@@ -12,7 +12,7 @@
 
 <body>
     <header>
-        <img src="../images/logo.png" class="design-logo" alt="Aventones Logo">
+        <img src="<?=base_url('images/logo.png')?>" class="design-logo" alt="Aventones Logo">
     </header>
 
     <main>

@@ -123,7 +123,8 @@ class Users extends BaseController
         $configurationModel = new ConfigurationModel(); 
         $configuration = $configurationModel->getConfigurationData($idUser); 
         $data['configuration'] = $configuration; 
-        return view('configuration/configuration', $data); 
+        $data['active'] = ''; // Ninguna opción activa
+        return $this->render('configuration/configuration', $data); 
     } 
 
     //Este método sirve para activar la cuenta de un usuario
