@@ -26,24 +26,22 @@ $routes->post('configuration/save', 'Users::saveConfiguration');
 $routes->get('bookings', 'Bookings::index');
 $routes->get('bookings/create/(:num)', 'Bookings::create/$1');
 $routes->get('bookings/update/(:num)/(:alpha)', 'Bookings::updateStatus/$1/$2');
-
+$routes->post('bookings/create/(:num)', 'Bookings::create/$1');
 //SEARCH RIDES
-$routes->get('searchRides', 'Rides::searchRidesPrivate');
-$routes->post('searchRides', 'Rides::searchRidesPrivate');
 
 $routes->get('searchRides/public', 'Rides::searchRidesPublic');
 $routes->post('searchRides/public', 'Rides::searchRidesPublic');
-$routes->get('passenger/searchRides', 'Rides::searchRidesPrivate');
-$routes->post('passenger/searchRides', 'Rides::searchRidesPrivate');
+$routes->get('searchRides/searchRides', 'Rides::searchRidesPrivate');
+$routes->post('searchRides/searchRides', 'Rides::searchRidesPrivate');
 
 
-//SEARCH REPORT
-$routes->get('users/administrator/searchReport', 'Rides::loadSearchReportByDate');
-$routes->post('users/administrator/searchReport', 'Rides::loadSearchReportByDate');
 
 //LOGIN
 $routes->get('/', 'AuthController::login');
 $routes->get('login', 'AuthController::login');
+
+//LOGOUT
+$routes->get('logout', 'AuthController::logout');
 
 //SAVE USERS
 $routes->post('passenger/store', 'Users::storePassenger');
