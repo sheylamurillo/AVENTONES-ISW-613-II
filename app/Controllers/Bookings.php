@@ -14,8 +14,9 @@ class Bookings extends BaseController
 
     public function index()
     {
-        if (!session()->has('user')) {
-            return redirect()->to('/login');
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verification; // Redirección si no está logueado
         }
 
         $session = session();

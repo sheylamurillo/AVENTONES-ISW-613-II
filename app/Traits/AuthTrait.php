@@ -18,7 +18,7 @@ trait AuthTrait
     {
         $Verification = $this->verifyLogged();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
         
 
@@ -32,7 +32,7 @@ trait AuthTrait
     {
         $Verification = $this->verifyLogged();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
 
         if (session()->get('user')['role'] !== 'Passenger') {
@@ -45,7 +45,7 @@ trait AuthTrait
     {
         $Verification = $this->verifyLogged();
         if ($Verification !== null) {
-            return $Verifications;
+            return $Verification;
         }
 
         if (session()->get('user')['role'] !== 'Admin') {

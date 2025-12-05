@@ -154,6 +154,10 @@ class Rides extends BaseController
 
      public function rideDetails($idRide)
     {
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verification; // Redirección si no está logueado
+        }
        
         $rideModel     = new RidesModel();
         $vehicleModel  = new VehiclesModel();
@@ -205,6 +209,10 @@ class Rides extends BaseController
     //se encarga de cargar los datos del reporte de acuerdo a un rango de fechas que viene por el formulario
     public function loadSearchReportByDate()
     {
+        $Verification = $this->verifyAdmin();
+        if ($Verification !== null) {
+            return $Verification; // Redirección si no está logueado
+        }
         $reportModel = new ReportModel();
         $data = ['search' => [], 'dateFrom' => '',
             'dateTo' => ''];
@@ -380,6 +388,13 @@ class Rides extends BaseController
     /* Carga la búsqueda privada de Rides. Si existen filtros guardados desde la búsqueda pública,se cargan esos resultados . Si no,
     simplemente se muestra la vista privada vacía o con datos por defecto*/
     public function searchRidesPrivate(){
+        
+        $Verification = $this->verifyPassenger();
+        if ($Verification !== null) {
+            return $Verification; // Redirección si no está logueado
+        }
+
+
         $session = session();
         if ($session->has('filters_public')) {
             $filters = $session->get('filters_public');
