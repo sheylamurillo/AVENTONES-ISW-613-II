@@ -4,9 +4,12 @@ namespace App\Controllers;
 use App\Models\UsersModel;
 use App\Models\ConfigurationModel;
 use App\Libraries\Email;
+use App\Traits\AuthTrait;
 
 class Users extends BaseController
 {
+
+    use AuthTrait;
 
     public function index()
     {
@@ -79,20 +82,85 @@ class Users extends BaseController
         $emailService->send($email, $firstName, $subject, $body);
     }
 
+    public function desactivateUsers()
+    {
+        if ($Verification = $this->verifyAdmin()) {
+            return $Verification;
+        }
+
+        $idUser = $this->request->getPost('id');
+        $status = $this->request->getPost('status');
+
+        $userModel = new UsersModel();
+        $userModel->update($idUser, ['status' => $status]);
+
+        return $this->response->setJSON(['success' => true]);
+    }
+
+    public function newAdmin(){
+        if ($Verification = $this->verifyAdmin()) {
+            return $Verification;
+        }
+        return view('users/administrator/newAdmin');
+
+
+    }
+
+    public function saveAdmin()
+    {
+        if ($Verification = $this->verifyAdmin()) {
+            return $Verification;
+        }
+
+        $data = $this->request->getPost();
+        $userModel = new UsersModel();
+
+        //Subida de imagen
+        $file = $this->request->getFile('picture');
+        $picturePath = null;
+
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $fileName = $file->getRandomName();
+            $file->move('uploads/users/', $fileName);
+            $picturePath = 'uploads/users/' . $fileName;
+        }
+
+        //Datos
+        $Data = [
+            'ID'          => $data['ID'],
+            'name'        => $data['name'],
+            'lastName'    => $data['lastName'],
+            'gmail'       => $data['gmail'],
+            'phoneNumber' => $data['phoneNumber'],
+            'birthDate'   => $data['birthDate'],
+            'address'     => $data['address'],
+            'password'    => password_hash($data['password'], PASSWORD_DEFAULT),
+            'picture'     => $picturePath,
+            'role'        => 'Admin',     
+            'status'      => 'active',    
+            'token'       => 'ABC'         
+        ];
+
+        $userModel->insert($Data);
+
+        return redirect()->to('/allUsers');
+    }
+
+
+
 
     /*Si el usuario está autenticado,obtiene los datos del formulario y revisa si el usuario ya tiene un registro de configuración: 
       si existe, lo actualiza; de lo contrario, lo guarda por primera vez. */
 
     public function saveConfiguration() 
     {
-        $session = session(); 
+        
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verification;
+        }
 
-        if (!session()->has('user')) 
-        { 
-            return redirect()->to('/login'); 
-        } 
-
-        $idUser = $session->get('user')['idUser']; 
+        $idUser = $this->$session->get('user')['idUser']; 
        
         $publicName = $this->request->getPost('public-name'); 
         $publicBio = $this->request->getPost('public-bio'); 
@@ -108,6 +176,74 @@ class Users extends BaseController
             $configurationModel->updateConfiguration($idUser, $publicName, $publicBio); 
         }
         return redirect()->to('/configuration'); 
+    }
+
+    public function loadUserDetails(){
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verification; // Redirección si no está logueado
+        }
+        $idUser = $this->session->get('user')['idUser'];
+
+        $userModel = new UsersModel();
+
+        $data['user'] = $userModel->find($idUser);
+        $data['active'] = '';
+        return $this->render('users/editProfile', $data);  
+        
+
+    }
+
+    public function saveProfileDetails(){
+
+        $Verification = $this->verifyLogged();
+        if ($Verification !== null) {
+            return $Verification; // Redirección si no está logueado
+        }
+
+            
+        $idUser = $this->session->get('user')['idUser'];
+
+        //Obtener datos del formulario
+        $data = $this->request->getPost();
+
+        $userModel = new UsersModel();
+
+        //Construir datos válidos para actualizar
+        $updateData = [
+            'name'        => $data['name'],
+            'lastName'    => $data['lastName'],
+            'ID'          => $data['ID'],
+            'birthDate'   => $data['birthDate'],
+            'gmail'       => $data['gmail'],
+            'address'     => $data['address'],
+            'phoneNumber' => $data['phoneNumber'],
+        ];
+
+        //Si el usuario ingresa una nueva contraseña
+        if (!empty($data['password'])) {
+            if ($data['password'] === $data['repeat-password']) {
+                $updateData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            } else {
+                return redirect()->back();
+            }
+        }
+
+        //Manejar imagen
+        $file = $this->request->getFile('picture');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $filename = $file->getRandomName();
+            $file->move('uploads/users/', $filename);
+            $updateData['picture'] = 'uploads/users/' . $filename;
+        }
+
+        //Actualizar usuario
+        $userModel->update($idUser, $updateData);
+
+        return redirect()->to('/searchRides/searchRides');
+
+
+
     }
 
     //Si el usuario está autenticado, obtiene su configuración desde el modelo y la envía a la vista para mostrarla en el formulario.
