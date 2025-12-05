@@ -22,13 +22,17 @@ $routes->post('admin/searchReport', 'Rides::loadSearchReportByDate');
 $routes->get('configuration', 'Users::loadConfiguration');
 $routes->post('configuration/save', 'Users::saveConfiguration');
 
+//EDIT PROFILE
+$routes->get('/profile', 'Users::loadUserDetails');
+$routes->post('user/editProfile', 'Users::saveProfileDetails');
+
 //BOOKINGS
 $routes->get('bookings', 'Bookings::index');
 $routes->get('bookings/create/(:num)', 'Bookings::create/$1');
 $routes->get('bookings/update/(:num)/(:alpha)', 'Bookings::updateStatus/$1/$2');
 $routes->post('bookings/create/(:num)', 'Bookings::create/$1');
-//SEARCH RIDES
 
+//SEARCH RIDES
 $routes->get('searchRides/public', 'Rides::searchRidesPublic');
 $routes->post('searchRides/public', 'Rides::searchRidesPublic');
 $routes->get('searchRides/searchRides', 'Rides::searchRidesPrivate');
@@ -46,6 +50,15 @@ $routes->get('logout', 'AuthController::logout');
 //SAVE USERS
 $routes->post('passenger/store', 'Users::storePassenger');
 $routes->post('driver/store', 'Users::storeDriver');
+
+//Desactivate Users
+$routes->post('user/desactivate', 'Users::desactivateUsers');
+
+//new Admin
+$routes->get('admin/newAdmin', 'Users::newAdmin');
+$routes->post('admin/saveAdmin', 'Users::saveAdmin');
+
+
 
 //Redireccionamientos a registros de pasajeros y drivers.
 $routes->post('auth/store', 'AuthController::authenticate');

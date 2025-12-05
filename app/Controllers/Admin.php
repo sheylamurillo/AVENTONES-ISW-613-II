@@ -13,7 +13,7 @@ class Admin extends BaseController
     {
         $Verification = $this->verifyAdmin();
         if ($Verification !== null) {
-            return $Verification; // Redirección si no está logueado o no es driver
+            return $Verification; // Redirección si no está logueado o no es Admin
         }
 
         $model = new UsersModel();
