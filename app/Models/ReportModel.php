@@ -32,8 +32,7 @@ class ReportModel extends Model
     {
         return $this->select('u.ID, u.name , u.lastName, search_report.origin,search_report.destination,search_report.results_count, search_report.search_date')
                     ->join('users u', 'search_report.idUser = u.idUser', 'left')
-                    ->where('search_report.search_date >=',$date1)
-                    ->where('search_report.search_date <=',$date2)
+                    ->where("search_report.search_date BETWEEN '$date1 00:00:00' AND '$date2 23:59:59'")
                     ->orderBy('search_report.search_date', 'DESC')
                     ->findAll();
     }
