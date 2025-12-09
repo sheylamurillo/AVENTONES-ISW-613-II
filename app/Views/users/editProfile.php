@@ -77,7 +77,7 @@
             </div>
 
             <div class="button-group">
-                <a href="<?= base_url('/searchRides/searchRides') ?>">Cancel</a>
+               <a href="<?= $cancelRoute ?>">Cancel</a>
                 <button type="submit">Save</button>
             </div>
 

@@ -82,7 +82,7 @@
 
 
         <div class="button-rows">
-            <a href="<?= base_url('rides') ?>">Cancel</a>
+            <a href="<?= $cancelRoute ?>">Cancel</a>
 
             <?php if ($role !== "Driver"): ?>
                 <button type="submit">Request</button>

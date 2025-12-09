@@ -101,8 +101,8 @@ class Users extends BaseController
         if ($Verification = $this->verifyAdmin()) {
             return $Verification;
         }
-        return view('users/administrator/newAdmin');
-
+        $data['active'] = 'users';
+        return $this->render('users/administrator/newAdmin',$data);
 
     }
 
@@ -160,7 +160,9 @@ class Users extends BaseController
             return $Verification;
         }
 
-        $idUser = $this->$session->get('user')['idUser']; 
+        $session = session();
+        $idUser = $session->get('user')['idUser'];  
+       
        
         $publicName = $this->request->getPost('public-name'); 
         $publicBio = $this->request->getPost('public-bio'); 
@@ -183,12 +185,22 @@ class Users extends BaseController
         if ($Verification !== null) {
             return $Verification; // Redirección si no está logueado
         }
-        $idUser = $this->session->get('user')['idUser'];
-
+        $session = session();
+        $idUser = $session->get('user')['idUser'];
+        $role   = $session->get('user')['role'];
         $userModel = new UsersModel();
 
         $data['user'] = $userModel->find($idUser);
         $data['active'] = '';
+        if ($role === 'Admin') {
+            $data['cancelRoute'] = base_url('/allUsers');
+        } 
+        else if ($role === 'Driver') {
+            $data['cancelRoute'] = base_url('/rides');
+        } 
+        else {
+            $data['cancelRoute'] = base_url('/searchRides/searchRides');
+        }
         return $this->render('users/editProfile', $data);  
         
 
@@ -239,11 +251,7 @@ class Users extends BaseController
 
         //Actualizar usuario
         $userModel->update($idUser, $updateData);
-
-        return redirect()->to('/searchRides/searchRides');
-
-
-
+        return redirect()->to('/profile');
     }
 
     //Si el usuario está autenticado, obtiene su configuración desde el modelo y la envía a la vista para mostrarla en el formulario.

@@ -164,6 +164,9 @@ class Rides extends BaseController
         $userModel     = new UsersModel();
 
         $ride = $rideModel->find($idRide);
+        $session = session();
+        $idUser = $session->get('user')['idUser'];
+        $role   = $session->get('user')['role'];
 
 
         // Obtener vehículo del ride
@@ -184,6 +187,16 @@ class Rides extends BaseController
         ];
 
         $data['active'] = 'rides';
+        if ($role === 'Admin') {
+            $data['cancelRoute'] = base_url('/allUsers');
+        } 
+        else if ($role === 'Driver') {
+            $data['cancelRoute'] = base_url('/rides');
+        } 
+        else {
+            $data['cancelRoute'] = base_url('/searchRides/searchRides');
+        }
+
         return $this->render('rides/rideDetails', $data);
     }
 
