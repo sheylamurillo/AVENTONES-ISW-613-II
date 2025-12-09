@@ -5,9 +5,11 @@ use CodeIgniter\Controller;
 use Config\Database;
 use App\Models\bookingsModel;
 use App\Controllers\BaseController;
+use App\Traits\AuthTrait;
 
 class Bookings extends BaseController
 {
+    use AuthTrait;
 
     /* Carga el listado de reservas del usuario autenticado que vienen desde el modelo.También determina, 
     según el rol y el estado de reserva, qué acciones (aceptar, rechazar o cancelar) están permitidas hacen en la vista.*/
